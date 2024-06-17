@@ -1,0 +1,11 @@
+@URL = {{ http://localhost:3000 }}
+
+POST {{URL}}/events
+Content-Type: application/json
+
+{
+  "name": "Event 01",
+  "description": "Anything",
+  "date": "2024-01-01T00:00:00",
+  "price": 102
+}
