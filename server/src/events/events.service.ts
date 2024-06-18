@@ -6,39 +6,36 @@ import { Event } from '@prisma/client';
 
 @Injectable()
 export class EventsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createEventDto: CreateEventDto) {
-    await this.prisma.event.create({ data: createEventDto })
+    await this.prisma.event.create({ data: createEventDto });
   }
 
   async findAll(): Promise<Event[]> {
-    return await this.prisma.event.findMany()
+    return await this.prisma.event.findMany();
   }
 
   async findOne(id: string): Promise<Event | null> {
-    const event = await this.prisma.event.findUnique({ where: { id } })
+    const event = await this.prisma.event.findUnique({ where: { id } });
+    if (!event) return null;
 
-    if (!event) return null
-
-    return event
+    return event;
   }
 
   async update(id: string, updateEventDto: UpdateEventDto) {
-    const isEventExist = await this.prisma.event.findUnique({ where: { id } })
+    const isEventExist = await this.prisma.event.findUnique({ where: { id } });
 
-    if (!isEventExist)
-      throw new NotFoundException()
+    if (!isEventExist) throw new NotFoundException();
 
-    await this.prisma.event.update({ where: { id }, data: updateEventDto })
+    await this.prisma.event.update({ where: { id }, data: updateEventDto });
   }
 
   async remove(id: string) {
-    const isEventExist = await this.prisma.event.findUnique({ where: { id } })
+    const isEventExist = await this.prisma.event.findUnique({ where: { id } });
 
-    if (!isEventExist)
-      throw new NotFoundException()
+    if (!isEventExist) throw new NotFoundException();
 
-    await this.prisma.event.delete({ where: { id } })
+    await this.prisma.event.delete({ where: { id } });
   }
 }
