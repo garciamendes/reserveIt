@@ -1,19 +1,19 @@
-import { IsDecimal, IsNotEmpty, IsString } from 'class-validator'
+import { IsDecimal, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateEventDto {
   @IsString()
   @IsNotEmpty()
-  name: string
+  name: string;
 
   @IsString()
   @IsNotEmpty()
-  description: string
+  description: string;
 
   @IsString()
   @IsNotEmpty()
-  date: string
+  date: string;
 
   @IsDecimal()
   @IsNotEmpty()
-  price: number
+  price: number;
 }
