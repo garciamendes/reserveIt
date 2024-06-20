@@ -9,7 +9,9 @@ export class EventsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createEventDto: CreateEventDto) {
-    await this.prisma.event.create({ data: createEventDto });
+    const event = await this.prisma.event.create({ data: createEventDto });
+
+    return event;
   }
 
   async findAll(): Promise<Event[]> {
@@ -28,7 +30,12 @@ export class EventsService {
 
     if (!isEventExist) throw new NotFoundException();
 
-    await this.prisma.event.update({ where: { id }, data: updateEventDto });
+    const event = await this.prisma.event.update({
+      where: { id },
+      data: updateEventDto,
+    });
+
+    return event;
   }
 
   async remove(id: string) {

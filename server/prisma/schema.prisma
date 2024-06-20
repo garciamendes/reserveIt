@@ -19,9 +19,70 @@ model Event {
   description String   @db.VarChar(300)
   date        DateTime
   price       Decimal
+  Spot        Spot[]
 
   created_at  DateTime @default(now())
   modified_at DateTime @updatedAt
 
   @@map("events")
+}
+
+model Spot {
+  id     String      @id @default(uuid())
+  name   String      @unique @db.VarChar(255)
+  status StatusSpot? @default(AVAILABLE)
+
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+
+  Ticket Ticket?
+
+  ResevationHistory ResevationHistory[]
+
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+
+  @@index([status])
+  @@map("spots")
+}
+
+model Ticket {
+  id         String     @id @default(uuid())
+  email      String     @unique @db.VarChar(255)
+  ticketKind TicketKind
+
+  spot   Spot   @relation(fields: [spotId], references: [id])
+  spotId String @unique
+
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+
+  @@index([ticketKind])
+  @@map("tickets")
+}
+
+model ResevationHistory {
+  id         String     @id @default(uuid())
+  email      String     @unique @db.VarChar(255)
+  ticketKind TicketKind
+  status     StatusSpot
+
+  spot   Spot   @relation(fields: [spotId], references: [id])
+  spotId String
+
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+
+  @@index([ticketKind, status])
+  @@map("resevations_histories")
+}
+
+enum StatusSpot {
+  AVAILABLE
+  RESERVED
+}
+
+enum TicketKind {
+  FULL
+  HALF
 }
